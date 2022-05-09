@@ -1,0 +1,29 @@
+name: "Push to AWS SQS"
+
+on:
+  push:
+    paths:
+      - 'data/cv-content.json'
+
+jobs:
+  push-to-sqs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Read cv-content.json
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./data/cv-content.json
+
+      - name: Echo cv-content.json
+        run: echo "${{ steps.package.outputs.content }}"
+
+      - uses: isbang/sqs-action@v0.1.1
+        with:
+          sqs-url: ${{ secrets.AWS_SQS_URL }}
+          message: "${{ steps.package.outputs.content }}"
