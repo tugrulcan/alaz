@@ -18,14 +18,15 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Read cv-content.json
+        id: read-cv-content
         uses: juliangruber/read-file-action@v1
         with:
           path: "./data/cv-content.json"
 
       - name: Echo cv-content.json
-        run: echo "${{ steps.package.outputs.content }}"
+        run: echo "${{ steps.read-cv-content.outputs.content }}"
 
       - uses: isbang/sqs-action@v0.1.1
         with:
           sqs-url: ${{ secrets.AWS_SQS_URL }}
-          message: "${{ steps.package.outputs.content }}"
+          message: "${{ steps.read-cv-content.outputs.content }}"
