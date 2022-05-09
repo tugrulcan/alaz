@@ -1,14 +1,5 @@
 {
-  "name": {
-    "DataType": "String",
-    "StringValue":"Tugrul C. Söll"
-  },
-  "title": {
-    "DataType": "String",
-    "StringValue":"Software Engineer"
-  },
-  "email": {
-    "DataType": "String",
-    "StringValue":"tugrulcansollu@gmail.com"
-  }
+  "name": "Tugrul C. Söll",
+  "title": "Software Engineer",
+  "email": "tugrulcansollu@gmail.com"
 }
