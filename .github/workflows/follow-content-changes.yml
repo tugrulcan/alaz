@@ -18,7 +18,7 @@ jobs:
       - name: Read cv-content.json
         uses: juliangruber/read-file-action@v1
         with:
-          path: ./data/cv-content.json
+          path: data/cv-content.json
 
       - name: Echo cv-content.json
         run: echo "${{ steps.package.outputs.content }}"
