@@ -27,8 +27,9 @@ jobs:
           path: "./data/cv-content.json"
 
       - name: Echo cv-content.json
-        run: echo "${{ steps.read-cv-content.outputs.content }}"
+        id: echo-cv-content
+        run: echo $(cat data/cv-content.json)
 
       - name: Push to SQS
         run: |
-          aws sqs send-message --queue-url ${{ secrets.AWS_SQS_URL }} --message-body "${{ steps.read-cv-content.outputs.content }}"
+          aws sqs send-message --queue-url ${{ secrets.AWS_SQS_URL }} --message-body "${{ steps.echo-cv-content.outputs.content }}"
