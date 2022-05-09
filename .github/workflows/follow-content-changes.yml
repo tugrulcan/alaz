@@ -1,4 +1,4 @@
-name: "Push to AWS SQS"
+name: "Push to AWS S3"
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 permissions: write-all
 
 jobs:
-  push-to-sqs:
+  Push-to-AWS-S3:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,6 +30,7 @@ jobs:
         id: echo-cv-content
         run: echo $(cat data/cv-content.json)
 
-      - name: Push to SQS
+
+      - name: Push to S3
         run: |
-          aws sqs send-message --queue-url ${{ secrets.AWS_SQS_URL }} --message-body "${{ steps.echo-cv-content.outputs.content }}"
+          aws s3 cp data/cv-content.json s3://${{ secrets.AWS_S3_BUCKET }}/cv-content.json
