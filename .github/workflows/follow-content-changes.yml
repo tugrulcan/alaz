@@ -31,4 +31,4 @@ jobs:
 
       - name: Push to SQS
         run: |
-          aws sqs send-message --queue-url ${{ secrets.AWS_SQS_URL }} --message-body "Information about the largest city in Any Region."  --message-attributes file://data/cv-content.json
+          aws sqs send-message --queue-url ${{ secrets.AWS_SQS_URL }} --message-body "${{ steps.read-cv-content.outputs.content }}"
