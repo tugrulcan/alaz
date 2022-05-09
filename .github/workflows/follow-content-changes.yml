@@ -5,11 +5,14 @@ on:
     paths:
       - 'data/cv-content.json'
 
+permissions: write-all
+
 jobs:
   push-to-sqs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -26,7 +29,6 @@ jobs:
       - name: Echo cv-content.json
         run: echo "${{ steps.read-cv-content.outputs.content }}"
 
-      - uses: isbang/sqs-action@v0.1.1
-        with:
-          sqs-url: ${{ secrets.AWS_SQS_URL }}
-          message: "${{ steps.read-cv-content.outputs.content }}"
+      - name: Push to SQS
+        run: |
+          aws sqs send-message --queue-url ${{ secrets.AWS_SQS_URL }} --message-body "Information about the largest city in Any Region."  --message-attributes file://data/cv-content.json
